@@ -1,0 +1,235 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Feliz Cumpleaños</title>
+
+
+<style>
+body {
+    margin: 0;
+    overflow: hidden;
+    background: linear-gradient(to top, #A020F0, #8000FF);
+    font-family: Arial, sans-serif;
+    text-align: center;
+    color: orange;
+    touch-action: manipulation;
+}
+
+/* Título */
+h1 {
+    margin-top: 60px;
+    font-size: 3em;
+    animation: aparecer 2s ease-in-out;
+}
+
+@keyframes aparecer {
+    from {opacity: 0; transform: translateY(-20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+@keyframes explosion {
+    from { transform: scale(0.5); opacity: 1; }
+    to { transform: scale(3); opacity: 0; }
+}
+
+@keyframes flotar {
+    0% { transform: translateY(100vh); }
+    100% { transform: translateY(-150px); }
+}
+
+/* Juego */
+#gift {
+    position: absolute;
+    font-size: 50px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+#gift:hover {
+    transform: scale(1.2);
+}
+
+/* Mensaje final */
+#mensajeFinal {
+    display: none;
+    margin-top: 20px;
+    font-size: 1.8em;
+}
+
+/* 🎵 Botón de música */
+#player {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+#playBtn {
+    background: red;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 14px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+@media (max-width: 768px) {
+    #player {
+        bottom: 80px;   
+        right: 50%;
+        transform: translateX(50%);
+    }
+
+    #playBtn {
+        font-size: 12px;
+        padding: 10px 15px;
+    }
+}
+
+#playBtn:hover {
+    background: darkred;
+    transform: scale(1.1);
+}
+</style>
+
+</head>
+<body>
+
+<h1>🎂 ¡Feliz Cumpleaños! 🎂</h1>
+
+<div id="mensajeFinal"> ✨ Hola, Saho Sé que esta puede ser nuestra última conversación. Comencé a hacerte este proyecto el 15 de este mes, no sé si esté bien, espero que sí. Espero que la vida te trate bien. Quiero agradecerte por todo lo que pasamos. Sé que mi despedida fue un poquito fea, pero estaba dolido. Te pido perdón. Te hago este regalo solo para decirte feliz cumpleaños y felices 2 años de conocerte. Gracias por mostrarme que en la vida a veces las peleas son necesarias, que no todo se soluciona con una sonrisa y que no todo es positivo. Eres lo mejor que me pasó. Espero algún día verte, y si no es en persona, que sea en la televisión como la más grande zoóloga. Sé que podrás hacer eso y más. No te pido volver porque creo que eso no me compete. Al final, si tú terminaste fue porque tenías tus razones. Espero que ya estés mejor. Feliz 18, mi niña. Te amaré. Aprendí a vivir sin ti, pero tengo que aprender a soñar una vida sin ti. Hasta luego, mi amorcito. como ultimo acto de amor quiero que veas esta peli de anime que queria ver contigo YOUR NAME espero te guste cuando la termines de ver entenderas el mensaje de abajo.💖✨ Quería decirte... que donde sea que estés en el mundo, te volveré a encontrar pase lo que pase. Taki Tachibana</div>
+<div id="gift">🎁</div>
+
+<!-- 🎵 Reproductor corregido -->
+<div id="player">
+    <button id="playBtn">▶ Esta siempre será nuestra canción</button>
+    <audio id="miCancion" src="web/compleaños/imagenes/SanLucas.mp3"></audio>
+</div>
+
+<script>
+
+/* 📱 Detectar si es celular */
+let esCelular = window.innerWidth < 768;
+
+/* 🎆 Configuración adaptable */
+let particulas = esCelular ? 20 : 70;
+let explosionesPorIntervalo = esCelular ? 1 : 2;
+let intervaloTiempo = esCelular ? 1400 : 700;
+
+function crearFuego(x, y) {
+
+    for (let i = 0; i < particulas; i++) {
+
+        let particula = document.createElement("div");
+        let size = Math.random() * 6 + 3;
+
+        particula.style.position = "absolute";
+        particula.style.width = size + "px";
+        particula.style.height = size + "px";
+        particula.style.borderRadius = "50%";
+        particula.style.background = `hsl(${Math.random()*360}, 100%, 60%)`;
+        particula.style.left = x + "px";
+        particula.style.top = y + "px";
+        particula.style.pointerEvents = "none";
+
+        document.body.appendChild(particula);
+
+        let angulo = Math.random() * 2 * Math.PI;
+        let velocidad = Math.random() * 6 + 2;
+
+        let vx = Math.cos(angulo) * velocidad;
+        let vy = Math.sin(angulo) * velocidad;
+
+        let gravedad = 0.06;
+        let opacidad = 1;
+
+        let anim = setInterval(() => {
+
+            vx *= 0.98;
+            vy += gravedad;
+
+            particula.style.left = (parseFloat(particula.style.left) + vx) + "px";
+            particula.style.top = (parseFloat(particula.style.top) + vy) + "px";
+
+            opacidad -= 0.02;
+            particula.style.opacity = opacidad;
+
+            if (opacidad <= 0) {
+                clearInterval(anim);
+                particula.remove();
+            }
+
+        }, 16);
+    }
+}
+
+/* 🎆 Explosiones automáticas */
+setInterval(() => {
+    for(let i = 0; i < explosionesPorIntervalo; i++){
+        let x = Math.random() * window.innerWidth;
+        let y = Math.random() * window.innerHeight * 0.6;
+        crearFuego(x, y);
+    }
+}, intervaloTiempo);
+
+
+/* 🎁 Mini juego */
+let gift = document.getElementById("gift");
+let mensaje = document.getElementById("mensajeFinal");
+
+gift.style.fontSize = "50px";
+
+function moverRegalo(){
+
+    let margenSuperior = 180;
+    let margenLateral = 20;
+
+    let giftWidth = gift.offsetWidth;
+    let giftHeight = gift.offsetHeight;
+
+    let maxX = window.innerWidth - giftWidth - margenLateral;
+    let maxY = window.innerHeight - giftHeight - 20;
+
+    let x = Math.random() * maxX + margenLateral;
+    let y = Math.random() * (maxY - margenSuperior) + margenSuperior;
+
+    gift.style.left = x + "px";
+    gift.style.top = y + "px";
+}
+
+gift.addEventListener("click", function(){
+    mensaje.style.display = "block";
+    gift.style.display = "none";
+
+    for(let i=0; i<3; i++){
+        crearFuego(window.innerWidth/2, window.innerHeight/2);
+    }
+});
+
+setInterval(moverRegalo, 1500);
+moverRegalo();
+
+
+/* 🎵 Reproductor tipo YouTube */
+let audio = document.getElementById("miCancion");
+let playBtn = document.getElementById("playBtn");
+
+playBtn.addEventListener("click", function(){
+
+    if(audio.paused){
+        audio.play();
+        playBtn.textContent = "⏸ Pausar canción";
+    } else {
+        audio.pause();
+        playBtn.textContent = "▶ Esta siempre será nuestra canción";
+    }
+
+});
+
+</script>
+
+</body>
+</html>
