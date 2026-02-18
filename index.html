@@ -8,8 +8,10 @@
 
 <style>
 body {
+    body {
     margin: 0;
-    overflow: hidden;
+    overflow-x: hidden;   
+    overflow-y: auto;     
     background: linear-gradient(to top, #A020F0, #8000FF);
     font-family: Arial, sans-serif;
     text-align: center;
@@ -54,13 +56,16 @@ h1 {
 /* Mensaje final */
 #mensajeFinal {
     display: none;
-    margin-top: 20px;
-    font-size: 1.8em;
+    margin: 40px auto;
+    font-size: 1.3em;
+    max-width: 800px;
+    padding: 0 20px;
+    line-height: 1.6;
 }
 
 /* 🎵 Botón de música */
 #player {
-    margin-top: 40px;
+    margin: 30px 0 60px 0;
     display: flex;
     justify-content: center;
 }
@@ -233,6 +238,7 @@ playBtn.addEventListener("click", function(){
 
 </body>
 </html>
+
 
 
 
